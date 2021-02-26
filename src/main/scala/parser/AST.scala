@@ -1,3 +1,3 @@
 package parser
 
-trait AST
+abstract class AST

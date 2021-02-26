@@ -30,5 +30,9 @@ class Parser(var tokens: List[Token]) {
     return y
   }
 
+  def toString(x: Exp): String={
+    return x.toString
+  }
+
 
 }
