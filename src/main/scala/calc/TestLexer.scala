@@ -14,6 +14,7 @@ object TestLexer {
 		println(System.getProperty("user.dir"))
 		var nameFile = "src/test/in01.test"
 		// if ( args.length>0 ) is = new FileInputStream(args(0))
+
 		is = new FileInputStream(nameFile)
 		try {
 			val lexer = new Lexer(is);
@@ -25,4 +26,5 @@ object TestLexer {
 			case e: Exception => e.printStackTrace()
 		}
 	}
+
 }

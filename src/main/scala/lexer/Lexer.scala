@@ -4,42 +4,53 @@ import lexer.StringUtils.StringImprovements
 import java.io.{IOException, InputStream}
 import scala.util.control.Breaks.{break, breakable}
 
-
 class Lexer(in: InputStream) {
 	private var chr = in.read(); // current ASCII character (coded as an integer)
 	private var buf = ""; // buffer
-	
+	private var tokens: List[Token] = Nil
+
 	def lex(): List[Token] = {
 		// return the list of tokens recorded in the file
-		var tokens: List[Token] = Nil
-		var token: Token = null // safe use of null will never be used
-
 		while(chr != -1)  {
-			// println(chr.toChar, chr);
 			if( chr.toChar == ' ' || chr == 10){
-				if( buf.length > 0){
-					token = getToken()
-					tokens ::= token
-					buf = ""
-				}
-			}else{
-					buf += chr.toChar
+				addToken();
+			} else if( chr.toChar == '(' || chr.toChar ==')'){
+				// this logic can be removed if the file is preprocessed
+				addToken();
+				buf += chr.toChar;
+				addToken();
+			}
+			else{
+					buf += chr.toChar;
 			}
 			chr = in.read()
 		}
-		if( buf.length >0)
-			println(buf)
+		addToken();
 		in.close();
 
 		tokens.reverse
 	}
+	def addToken(): Unit ={
+		if( buf.length > 0){
+			tokens ::= getToken(buf)
+			buf = ""
+		}
+	}
 
-	def getToken(): Token = {
+	def getToken(buf: String): Token = {
 		if( buf.isInt ) return INT
 		if( buf == "(") return LPAR
 		if( buf == ")") return RPAR
-		else return KEY
+		if( buf == "+") return PLUS
+		if( buf == "-") return MINUS
+		if( buf == "*") return MUL
+		if( buf == "/") return DIV
+		if( buf == "if") return IF
+		if( buf.isIdentifier() ) return ID
+		if( buf.hasSpecialChars())	throw new UnexpectedCharacter(buf)
+		else return FOO
 	}
+
 }
 
 

@@ -7,5 +7,14 @@ object StringUtils {
     def isInt(): Boolean={
       return s.forall(_.isDigit)
     }
+
+    def hasSpecialChars(): Boolean ={
+      return !s.forall(_.isLetterOrDigit);
+    }
+
+    def isIdentifier(): Boolean ={
+      return s.matches("^[A-Za-z]+.*[0-9]*$");
+    }
+
   }
 }
