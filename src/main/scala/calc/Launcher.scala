@@ -1,25 +1,27 @@
 package calc
 import java.io.FileInputStream
 import java.io.InputStream
-
 import lexer.{Lexer, Token}
-import parser.Parser
+import parser.{AST, Parser}
 
 object Launcher {
+
+	def interpret(nameFile: String): Int ={
+		val lexer = new Lexer(new FileInputStream(nameFile));
+		val tokens = lexer.getTokens();
+		println(tokens)
+		val ast = new Parser(tokens).buildTree();
+		println(ast)
+		return ast.eval;
+	}
 	def main(args: Array[String]) {
 		var is: InputStream = System.in;
-		println(System.getProperty("user.dir"))
-		var nameFile = "src/test/in01.test"
-		is = new FileInputStream(nameFile)
+		// where am i?
+		var nameFile = "src/test/greenUnExpMinus2.calc"
 		try {
-			val lexer = new Lexer(is);
-			val tokens:List[Token] = lexer.lex()
-			// for(t <- tokens) println(t)
-			println(tokens)
-	 		// println(tokens.size + " token(s) found")
-			var parser = new Parser(tokens);
-			var ast = parser.parse();
-			println(ast)
+			val res = interpret(nameFile);
+			println(res);
+			println("")
 		} catch {
 			case e: Exception => e.printStackTrace()
 		}

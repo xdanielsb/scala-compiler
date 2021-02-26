@@ -1,3 +1,5 @@
 package parser
 
-abstract class AST
+class AST{
+  def eval: Int = 0
+}

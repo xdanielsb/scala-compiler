@@ -17,13 +17,30 @@ case class INT(key: String) extends Token(key) // Integer
 case class FOO(key: String) extends Token(key) // Token not classified
 
 ///--- operations
-sealed class OP(key: String) extends Token(key)
-case class PLUS(key: String) extends OP(key) // +
-case class MINUS(key: String) extends OP(key) // -
-case class DIV(key: String) extends OP(key) // /
-case class MUL(key: String) extends OP(key) // *
-case class EQUA(key: String) extends OP(key) // ==
-case class LESS(key: String) extends OP(key) // <
+sealed abstract class OP(key: String) extends Token(key){
+  def eval(a: Int, b: Int): Int
+}
+case class PLUS(key: String) extends OP(key) {
+  override def eval(a: Int, b: Int): Int = a + b
+} // +
+case class MINUS(key: String) extends OP(key) {
+  // if you want to negate i.e -3 then a = 0
+  override def eval(a: Int, b: Int): Int = a - b
+} // -
+case class DIV(key: String) extends OP(key) {
+  override def eval(a: Int, b: Int): Int = a / b
+} // /
+case class MUL(key: String) extends OP(key) {
+  // problem with long ?
+  override def eval(a: Int, b: Int): Int = a * b
+
+} // *
+case class EQUA(key: String) extends OP(key) {
+  override def eval(a: Int, b: Int): Int = if( a == b ) 1 else 0
+} // ==
+case class LESS(key: String) extends OP(key) {
+  override def eval(a: Int, b: Int): Int = if( a < b ) 1 else 0
+} // <
 
 
 ///--- reserved

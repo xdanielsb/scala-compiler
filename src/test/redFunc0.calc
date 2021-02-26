@@ -1,0 +1,2 @@
+(defun (zero) 0)
+(zero)

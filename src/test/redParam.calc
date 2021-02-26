@@ -1,0 +1,4 @@
+(defun (inc x)
+  (= x 0)
+  (+ x 1))
+(inc 2)

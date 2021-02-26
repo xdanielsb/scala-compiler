@@ -1,0 +1,11 @@
+(defun (fib n)
+  (if (== n 0) 0
+      (if (== n 1) 1
+          (fibaux n))))
+(defun (fibaux n)
+  (= fib1 (fib (- n 1)))
+  (= fib2 (fib (- n 2)))
+  (+ fib1 fib2))
+(fib 4)
+
+

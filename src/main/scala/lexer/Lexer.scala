@@ -9,23 +9,29 @@ class Lexer(in: InputStream) {
 	private var buf = ""; // buffer
 	private var tokens: List[Token] = Nil
 
-	def lex(): List[Token] = {
+	def getTokens(): List[Token] = {
 		// return the list of tokens recorded in the file
 		while(chr != -1)  {
-			if( chr.toChar == ' ' || chr == 10){
+			if( chr.toChar == ' ' || chr == 10 || chr == 13 || chr == 9) {
+				// 13 for pre-OS X
 				addToken();
-			} else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue()=="("){
-					// to tackle this: (-2), (--2)
-					if(buf.length >0 ) println("real?", tokens.last.getValue(), buf)
-					buf += chr.toChar;
-					addToken();
+			} else if(buf.length == 0 && chr.toChar == '0'){
+				// to tackle 00 -> 0 0
+				buf += chr.toChar;
+				addToken();
+			}
+			else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue()=="("){
+				// to tackle this: (-2), (--2)
+				assert(buf.length == 0)
+				buf += chr.toChar;
+				addToken();
 			} else if( chr.toChar == '(' || chr.toChar ==')'){
 				// this logic can be removed if the file is preprocessed
 				addToken();
 				buf += chr.toChar;
 				addToken();
 			} else{
-					buf += chr.toChar;
+				buf += chr.toChar;
 			}
 			chr = in.read()
 		}

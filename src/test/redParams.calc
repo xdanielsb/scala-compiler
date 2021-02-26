@@ -1,0 +1,2 @@
+(defun (id x0 x0) x0)
+(id 0 1)

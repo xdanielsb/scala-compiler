@@ -1,0 +1,8 @@
+(defun (loop) (loop))
+(+ (if 1 1 (loop))
+   (if 0 (loop) 1))
+
+
+
+
+

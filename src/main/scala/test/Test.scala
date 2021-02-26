@@ -1,9 +1,11 @@
 package test
 
+import calc.Launcher.interpret
+
 trait Test {
   private var count = 0
   private var success = 0
-  private var verbose = false
+  private var verbose = true
 
   def report(): Unit = println(s"$success successful tests out of $count")
 
@@ -13,13 +15,14 @@ trait Test {
     args0(0) = filename
     if (verbose) println(s"====: ${filename}\ncontent: ${mess1}\nexpected: ${expected}")
     try {
-      val found = None; // interpret(new FileInputStream(filename))
+      val found = interpret(filename)
+      println(s"result: $found")
       expected match {
         case None => // error expected
           System.err.println(s"FAILURE on $filename")
           System.err.println(s"error expected, found $found")
         case Some(result) => // integer expected
-          if (verbose) println(s"result: $found")
+
           if (found != result) {
             System.err.println(s"FAILURE on $filename")
             System.err.println(s"expecting $result, found $found")
@@ -46,7 +49,4 @@ trait Test {
     }
   }
 
-  def main(args: Array[String]): Unit =
-    if (args.length > 0 && args(0) == "-v") verbose = true
-    else verbose = false
 }

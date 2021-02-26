@@ -1,0 +1,5 @@
+(defun (even n) (if (== n 0) 1 (odd (- n 1))))
+(defun (odd n) (if (== n 0) 0 (even (- n 1))))
+(+ (even 2) (+ (odd 2) (+ (even 3) (odd 3))))
+
+

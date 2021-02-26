@@ -1,0 +1,7 @@
+(defun (id x) x)
+(defun (id2 x) x)
+22
+
+
+
+
