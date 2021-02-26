@@ -38,17 +38,19 @@ class Lexer(in: InputStream) {
 	}
 
 	def getToken(buf: String): Token = {
-		if( buf.isInt ) return INT
-		if( buf == "(") return LPAR
-		if( buf == ")") return RPAR
-		if( buf == "+") return PLUS
-		if( buf == "-") return MINUS
-		if( buf == "*") return MUL
-		if( buf == "/") return DIV
-		if( buf == "if") return IF
-		if( buf.isIdentifier() ) return ID
+		if( buf.isInt ) return INT(buf)
+		if( buf == "(") return LPAR(buf)
+		if( buf == ")") return RPAR(buf)
+		if( buf == "+") return PLUS(buf)
+		if( buf == "-") return MINUS(buf)
+		if( buf == "*") return MUL(buf)
+		if( buf == "<") return LESS(buf)
+		if( buf == "==") return EQUA(buf)
+		if( buf == "/") return DIV(buf)
+		if( buf == "if") return IF(buf)
+		if( buf.isIdentifier() ) return ID(buf)
 		if( buf.hasSpecialChars())	throw new UnexpectedCharacter(buf)
-		else return FOO
+		else return FOO(buf) //  :'( shouldn't
 	}
 
 }
