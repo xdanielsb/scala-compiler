@@ -1,10 +1,12 @@
 package lexer
 
+import scala.util.Try
+
 object StringUtils {
   implicit class StringImprovements(val s: String) {
 
     def isInt(): Boolean={
-      return s.forall(_.isDigit)
+      return Try{ s.toInt }.isSuccess
     }
 
     def hasSpecialChars(): Boolean ={

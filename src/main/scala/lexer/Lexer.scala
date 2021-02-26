@@ -14,13 +14,17 @@ class Lexer(in: InputStream) {
 		while(chr != -1)  {
 			if( chr.toChar == ' ' || chr == 10){
 				addToken();
+			} else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue()=="("){
+					// to tackle this: (-2), (--2)
+					if(buf.length >0 ) println("real?", tokens.last.getValue(), buf)
+					buf += chr.toChar;
+					addToken();
 			} else if( chr.toChar == '(' || chr.toChar ==')'){
 				// this logic can be removed if the file is preprocessed
 				addToken();
 				buf += chr.toChar;
 				addToken();
-			}
-			else{
+			} else{
 					buf += chr.toChar;
 			}
 			chr = in.read()
@@ -38,7 +42,6 @@ class Lexer(in: InputStream) {
 	}
 
 	def getToken(buf: String): Token = {
-		if( buf.isInt ) return INT(buf)
 		if( buf == "(") return LPAR(buf)
 		if( buf == ")") return RPAR(buf)
 		if( buf == "+") return PLUS(buf)
@@ -47,6 +50,7 @@ class Lexer(in: InputStream) {
 		if( buf == "<") return LESS(buf)
 		if( buf == "==") return EQUA(buf)
 		if( buf == "/") return DIV(buf)
+		if( buf.isInt ) return INT(buf)
 		if( buf == "if") return IF(buf)
 		if( buf.isIdentifier() ) return ID(buf)
 		if( buf.hasSpecialChars())	throw new UnexpectedCharacter(buf)

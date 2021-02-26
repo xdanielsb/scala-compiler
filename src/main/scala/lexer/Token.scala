@@ -1,6 +1,7 @@
 package lexer
 
 sealed class Token(key: String){
+
   def getValue(): String ={
     return key
   }
