@@ -1,6 +1,6 @@
 package parser
 
-import lexer.{IF, MINUS, OP, Token}
+import lexer.{ASSIGN, EQUA, ID, IF, MINUS, OP, Token}
 sealed class Exp extends AST{
   //override def toString: String = super.toString
 }
@@ -19,4 +19,7 @@ case class BinExp(op: OP, e1: Exp, e2: Exp) extends Exp{
 case class ifExp(op: IF, e1: Exp, e2: Exp, e3: Exp) extends Exp{
   //override def toString: String = "( if "+ e1.toString + " " + e2.toString + " "+e3.toString + " )"
   override def eval: Int = if (e1.eval != 0) e2.eval else e3.eval
+}
+case class varDef(op: ASSIGN, id: ID, e2: Exp) extends Exp{
+  override def eval: Int = 0 // TODO update table of symbols
 }

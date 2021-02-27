@@ -14,7 +14,15 @@ object StringUtils {
     }
 
     def isIdentifier(): Boolean ={
-      return s.matches("^[A-Za-z]+.*[0-9]*$");
+      return s.matches("^[a-z]+.*[0-9]*$");
+    }
+
+    def isFun(): Boolean={
+      return s.equals("defun")
+    }
+
+    def isIf(): Boolean={
+      return s.equals("if")
     }
 
   }

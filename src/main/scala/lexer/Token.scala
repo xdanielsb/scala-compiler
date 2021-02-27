@@ -38,6 +38,9 @@ case class MUL(key: String) extends OP(key) {
 case class EQUA(key: String) extends OP(key) {
   override def eval(a: Int, b: Int): Int = if( a == b ) 1 else 0
 } // ==
+case class ASSIGN(key: String) extends OP(key) {
+  override def eval(a: Int, b: Int): Int = a + b // TODO
+} // ==
 case class LESS(key: String) extends OP(key) {
   override def eval(a: Int, b: Int): Int = if( a < b ) 1 else 0
 } // <
@@ -45,4 +48,7 @@ case class LESS(key: String) extends OP(key) {
 
 ///--- reserved
 case class IF(key: String) extends Token(key) // *
-case class DEF(key: String) extends Token(key)
+
+
+sealed abstract class DEF(key: String) extends Token(key)
+case class FUNDEF(key:String) extends Token(key)

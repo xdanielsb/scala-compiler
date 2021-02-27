@@ -1,5 +1,6 @@
 package lexer
 import lexer.StringUtils.StringImprovements
+import parser.SyntaxError
 
 import java.io.{IOException, InputStream}
 import scala.util.control.Breaks.{break, breakable}
@@ -13,14 +14,14 @@ class Lexer(in: InputStream) {
 		// return the list of tokens recorded in the file
 		while(chr != -1)  {
 			if( chr.toChar == ' ' || chr == 10 || chr == 13 || chr == 9) {
+				// maybe a better option 1 <= chr <= 32 ?
 				// 13 for pre-OS X
 				addToken();
 			} else if(buf.length == 0 && chr.toChar == '0'){
 				// to tackle 00 -> 0 0
 				buf += chr.toChar;
 				addToken();
-			}
-			else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue()=="("){
+			} else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue()=="("){
 				// to tackle this: (-2), (--2)
 				assert(buf.length == 0)
 				buf += chr.toChar;
@@ -42,6 +43,7 @@ class Lexer(in: InputStream) {
 	}
 	def addToken(): Unit ={
 		if( buf.length > 0){
+			val token = getToken(buf)
 			tokens ::= getToken(buf)
 			buf = ""
 		}
@@ -55,14 +57,14 @@ class Lexer(in: InputStream) {
 		if( buf == "*") return MUL(buf)
 		if( buf == "<") return LESS(buf)
 		if( buf == "==") return EQUA(buf)
+		if( buf == "=") return ASSIGN(buf)
 		if( buf == "/") return DIV(buf)
 		if( buf.isInt ) return INT(buf)
-		if( buf == "if") return IF(buf)
-		if( buf.isIdentifier() ) return ID(buf)
-		if( buf.hasSpecialChars())	throw new UnexpectedCharacter(buf)
-		else return FOO(buf) //  :'( shouldn't
+		if( buf.isIf) return IF(buf)
+		if( buf.isFun) return FUNDEF(buf);
+		if( buf.isIdentifier) return ID(buf)
+		if( buf.hasSpecialChars)	throw new UnexpectedCharacter(buf)
+		else throw new UndefinedToken(buf) //  :'( shouldn't
 	}
 
 }
-
-

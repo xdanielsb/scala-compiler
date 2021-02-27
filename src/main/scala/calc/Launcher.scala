@@ -15,9 +15,10 @@ object Launcher {
 		return ast.eval;
 	}
 	def main(args: Array[String]) {
+		// (= a 1) (= b 2) (+ a b)
 		var is: InputStream = System.in;
 		// where am i?
-		var nameFile = "src/test/greenUnExpMinus2.calc"
+		var nameFile = "src/test/blueUndef.calc"
 		try {
 			val res = interpret(nameFile);
 			println(res);
