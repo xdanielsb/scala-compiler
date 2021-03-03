@@ -42,11 +42,16 @@ case class VarDef(op: ASSIGN, id: ID, e2: Exp) extends Exp{
   def eval: Int = ex.eval
 }*/
 case class Body(ex: Exp) extends Exp{
-
+  def getEx: Exp = ex;
 }
-case class Head(fundef: FUNDEF, parameters: List[ID]){
-
+case class Head(name: ID, parameters: List[ID]){
+  def getID: ID = name
 }
 case class FunDef(head: Head, body: Body) extends Exp{
+  def getHead: Head = head
+  def getBody: Body = body
+}
 
+case class Call(name: ID, arguments: List[ID]) extends  Exp{
+  def getID: ID = name
 }
