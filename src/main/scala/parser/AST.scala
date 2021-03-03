@@ -1,5 +1,5 @@
 package parser
 
 class AST{
-  def eval: Int = 0
+  // def eval: Int = 0
 }

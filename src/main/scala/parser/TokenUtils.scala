@@ -1,6 +1,6 @@
 package parser
 
-import lexer.{ASSIGN, EQUA, ID, IF, INT, LPAR, MINUS, OP, RPAR, Token}
+import lexer.{ASSIGN, EQUA, FUNDEF, ID, IF, INT, LPAR, MINUS, OP, RPAR, Token}
 
 object TokenUtils {
   implicit class TokenImprovements(val s: Token) {
@@ -13,6 +13,7 @@ object TokenUtils {
     def isID() = s.isInstanceOf[ID];
     def isEQUAL() = s.isInstanceOf[EQUA];
     def isASSIGN() = s.isInstanceOf[ASSIGN];
+    def isFUN() = s.isInstanceOf[FUNDEF]; // gc: haha is 'fun' :3
 
     def asInt() = s.asInstanceOf[INT];
     def asLPAR() = s.asInstanceOf[LPAR];
@@ -23,6 +24,7 @@ object TokenUtils {
     def asID() = s.asInstanceOf[ID];
     def asEQUAL() = s.asInstanceOf[EQUA]
     def asASSIGN() = s.asInstanceOf[ASSIGN];
+    def asFUN() = s.asInstanceOf[FUNDEF]; // pertinent comment: boring to 'fun'
 
   }
 }

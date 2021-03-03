@@ -10,15 +10,17 @@ object Launcher {
 		val lexer = new Lexer(new FileInputStream(nameFile));
 		val tokens = lexer.getTokens();
 		println(tokens)
-		val ast = new Parser(tokens).buildTree();
+		val parser = new Parser(tokens);
+		val ast = parser.buildTree();
 		println(ast)
-		return ast.eval;
+		//print(parser.eval(ast))
+		return parser.eval(ast);
 	}
 	def main(args: Array[String]) {
 		// (= a 1) (= b 2) (+ a b)
 		var is: InputStream = System.in;
 		// where am i?
-		var nameFile = "src/test/blueUndef.calc"
+		var nameFile = "src/test/redFib.calc"
 		try {
 			val res = interpret(nameFile);
 			println(res);

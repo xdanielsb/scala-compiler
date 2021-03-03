@@ -1,25 +1,52 @@
 package parser
 
-import lexer.{ASSIGN, EQUA, ID, IF, MINUS, OP, Token}
+import lexer.{ASSIGN, EQUA, FUNDEF, ID, IF, MINUS, OP, Token}
 sealed class Exp extends AST{
   //override def toString: String = super.toString
 }
-case class IntLit(value: String) extends Exp{
+case class Var(id: ID) extends Exp{
+  // override def toString: String = value
+  def getID: ID = id;
+}
+case class IntLit(value: Int) extends Exp{
  // override def toString: String = value
-  override def eval: Int = value.toInt
+  def toInt: Int = value
 }
 case class MinExp(op: MINUS, e1: Exp) extends Exp{
  // override def toString: String = "( - "+ e1.toString + " )"
-  override def eval: Int = -e1.eval
+  def getExp: Exp = e1;
+
 }
 case class BinExp(op: OP, e1: Exp, e2: Exp) extends Exp{
  // override def toString: String = "( OP "+ e1.toString + " " + e2.toString + " )"
-  override def eval: Int = op.eval(e1.eval, e2.eval)
+  def getOp: OP = op;
+  def getE1: Exp = e1;
+  def getE2: Exp = e2;
 }
-case class ifExp(op: IF, e1: Exp, e2: Exp, e3: Exp) extends Exp{
+case class IfExp(op: IF, e1: Exp, e2: Exp, e3: Exp) extends Exp{
   //override def toString: String = "( if "+ e1.toString + " " + e2.toString + " "+e3.toString + " )"
-  override def eval: Int = if (e1.eval != 0) e2.eval else e3.eval
+  def getE1: Exp = e1;
+  def getE2: Exp = e2;
+  def getE3: Exp = e3;
+
 }
-case class varDef(op: ASSIGN, id: ID, e2: Exp) extends Exp{
-  override def eval: Int = 0 // TODO update table of symbols
+case class LinkedExp(ex1: Exp, ex2: Exp) extends  Exp{
+  def getE1: Exp = ex1;
+  def getE2: Exp = ex2;
+}
+case class VarDef(op: ASSIGN, id: ID, e2: Exp) extends Exp{
+  def getID: ID = id;
+  def getEx: Exp = e2;
+}
+/*case class Body(vars: List[VarDef], ex: Exp) {
+  def eval: Int = ex.eval
+}*/
+case class Body(ex: Exp) extends Exp{
+
+}
+case class Head(fundef: FUNDEF, parameters: List[ID]){
+
+}
+case class FunDef(head: Head, body: Body) extends Exp{
+
 }
