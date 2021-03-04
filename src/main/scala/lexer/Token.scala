@@ -13,7 +13,9 @@ case class LPAR(key: String) extends Token(key) // Left parenthesis (
 case class RPAR(key: String) extends Token(key) // Right parenthesis )
 case class ID(key: String) extends Token(key) // Identifier i.e := nameUser, x, y , foo12
 case class SP(key: String) extends Token(key) // Space ' '
-case class INT(key: String) extends Token(key) // Integer
+case class INT(key: String) extends Token(key) {
+  def toInt: Int = key.toInt
+}// Integer
 case class FOO(key: String) extends Token(key) // Token not classified
 
 ///--- operations

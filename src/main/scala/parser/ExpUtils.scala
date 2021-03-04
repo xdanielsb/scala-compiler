@@ -26,6 +26,9 @@ object ExpUtils {
     def isFunDef() = s.isInstanceOf[FunDef];
     def asFunDef() = s.asInstanceOf[FunDef];
 
+    def isCall() = s.isInstanceOf[Call];
+    def asCall() = s.asInstanceOf[Call];
+
     /*
     def is() = s.isInstanceOf[];
     def as() = s.asInstanceOf[];

@@ -23,7 +23,7 @@ object Launcher {
 		// (= a 1) (= b 2) (+ a b)
 		var is: InputStream = System.in;
 		// where am i?
-		var nameFile = "src/test/BlueDef2.calc"
+		var nameFile = "src/test/redFib0.calc"
 		try {
 			val res = interpret(nameFile);
 			println(res);

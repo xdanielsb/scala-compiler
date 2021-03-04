@@ -46,12 +46,14 @@ case class Body(ex: Exp) extends Exp{
 }
 case class Head(name: ID, parameters: List[ID]){
   def getID: ID = name
+  def getParams: List[ID] = parameters
 }
 case class FunDef(head: Head, body: Body) extends Exp{
   def getHead: Head = head
   def getBody: Body = body
 }
 
-case class Call(name: ID, arguments: List[ID]) extends  Exp{
+case class Call(name: ID, arguments: List[Exp]) extends  Exp{
   def getID: ID = name
+  def getArgs: List[Exp] = arguments
 }

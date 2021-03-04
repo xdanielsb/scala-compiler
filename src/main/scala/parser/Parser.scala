@@ -11,22 +11,34 @@ class Parser(var tokens: List[Token]) {
 
   var functor: Map[ID, FunDef] = Map()
 
-  def eval(s: Exp, ctx: Map[ID ,Int] ): Int ={
+  def eval(s: Exp, ctx: Map[ID ,Exp] ): Int ={
     if (s.isIntLit()) return s.asIntLit().toInt
+    if(s.isCall()){
+      val v = s.asCall().getID
+      var args= s.asCall().getArgs.map(x => IntLit(eval(x, ctx)))
+
+      if(functor.contains(v)) {
+        val fu = functor(v)
+        val params = fu.getHead.getParams
+        val ctx2 = ctx ++ (params zip args) toMap;
+        return eval(fu.getBody.getEx, ctx2) // Todo change to ctx2
+      }
+    }
     if (s.isVar()){
       val v = s.asVar().getID
       if(ctx.contains(v)){
         // TODO: may this happen?. recursion i.e ( = a 1 )  ( = b a ) ( = c b ) --> dfs
-        return ctx(v)
-      }else if(functor.contains(v)) {
-        return eval(functor(v).getBody.getEx, ctx)
+        var yak = eval(ctx(v), ctx)
+        return yak
       }
-      return ctx(v)
+      return eval(ctx(v), ctx)
     }
     if (s.isMinExp()) return -eval(s.asMinExp().getExp, ctx)
     if( s.isBinExp()) {
       val bin = s.asBinExp()
-      return bin.getOp.eval(eval(bin.getE1, ctx),eval( bin.getE2, ctx))
+      var a1 = eval(bin.getE1, ctx);
+      var a2 = eval( bin.getE2, ctx);
+      return bin.getOp.eval(a1, a2);
     }
     if (s.isIfExp()){
       val ife = s.asIfExp()
@@ -37,15 +49,20 @@ class Parser(var tokens: List[Token]) {
       val lx = s.asLinkedExp()
       if( lx.getE1.isVarDef()){
         val ex1 = lx.getE1.asVarDef()
-        val ctx2 = ctx ++ collection.immutable.Map( ex1.getID -> eval(ex1.getEx, ctx))
+        if( ex1.getEx.isVar()  ) {
+          // info: just query the element to check if exist
+          ctx(ex1.getEx.asVar().getID)
+        }
+        val ctx2 = ctx ++ collection.immutable.Map( ex1.getID -> ex1.getEx)
         return eval(lx.getE2, ctx2)
+      }else{
+       // eval(lx.getE1, ctx);
       }
       return eval(lx.getE2, ctx)
     }
     if (s.isVarDef()){
       val vd = s.asVarDef()
       if(Try{ eval(vd.getEx, ctx) }.isSuccess){
-        // var ctx: Map[ID ,Int] = Map()
         return eval(vd.getEx, ctx)
       }else{
         throw new SyntaxError("E04: Variable "+ vd.getID + " not defined")
@@ -67,8 +84,8 @@ class Parser(var tokens: List[Token]) {
     if (y.isLPAR) {
       val z = pop()
       if (z.isID()){
-        var arguments: List[ID] = Nil
-        while(tokens.head.isID) arguments ::= pop().asID()
+        var arguments: List[Exp] = Nil
+        while(tokens.nonEmpty && !tokens.head.isRPAR()) arguments ::= buildTree()
         ans = Call(z.asID(), arguments)
         // info: is it possible to have multiple calls?
       } else if( z.isMINUS  && isUnaryMinus() ) {
