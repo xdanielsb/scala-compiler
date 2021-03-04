@@ -1,40 +1,51 @@
 package test
 
-import lexer.{ID, Lexer}
-import parser.{FunDef, Parser}
 import evaluator.Evaluator
+import lexer.Lexer
+import parser.Parser
 
-import java.io.{BufferedInputStream, FileInputStream, InputStream}
+import java.io.{BufferedInputStream, FileInputStream}
 
 object TestSingleFile {
 
-  def interpret(nameFile: String): Int = {
+  def interpret(nameFile: String, verbose: Boolean = false): Int = {
     val file = scala.io.Source.fromFile(nameFile).mkString
     println(nameFile)
     println(file)
 
     //1 - we get the tokens
-    val lexer = new Lexer(new BufferedInputStream(new FileInputStream((nameFile))));
+    val lexer = new Lexer(new BufferedInputStream(new FileInputStream(nameFile)))
     val tokens = lexer.getTokens
-    println(tokens)
+    if( verbose){
+      println("Tokens: "+ tokens)
+    }
 
     //2 - we build the syntax tree
-    val parser = new Parser(tokens);
-    val ast = parser.buildTree();
-    println(ast)
+    val parser = new Parser(tokens)
+    val ast = parser.buildTree()
+
+    if(verbose){
+      println("Syntax tree: " + ast)
+    }
+
 
     //3 - we evaluate the tree
-    val inspect = new Evaluator(parser.functor)
-    val res = inspect.eval(ast, Map());
-    return res
+    val inspect = new Evaluator(parser.functions)
+    val res = inspect.eval(ast, Map())
+
+    if(verbose){
+      println("Evaluation of the tree: " + res)
+    }
+
+
+    res
   }
 
   def main(args: Array[String]) {
-    var is: InputStream = System.in;
     // am I asleep?
-    var nameFile = "src/test/errorGarbage2.calc"
+    val nameFile = "src/test/errorGarbage2.calc"
     try {
-      val res = interpret(nameFile);
+      interpret(nameFile)
     } catch {
       case e: Exception => e.printStackTrace()
     }

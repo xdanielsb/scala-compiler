@@ -25,6 +25,7 @@ case class FOO(key: String) extends Token(key) // Token not classified
 
 ///--- operations
 sealed abstract class OP(key: String) extends Token(key) {
+  def getKey: String = key
   def eval(a: Int, b: Int): Int
 }
 

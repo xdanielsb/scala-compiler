@@ -5,7 +5,6 @@ import TestSingleFile.interpret
 trait Test {
   private var count = 0
   private var success = 0
-  private var verbose = true
 
   def report(): Unit = println(s"$success successful tests out of $count")
 
