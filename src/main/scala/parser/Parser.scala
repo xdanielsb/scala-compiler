@@ -19,7 +19,7 @@ class Parser(var tokens: List[Token]) {
 
       if(functor.contains(v)) {
         val fu = functor(v)
-        val params = fu.getHead.getParams
+        val params= fu.getHead.getParams
         // info: here we remove ctx of the parent
         //       actual parameters take its values
         val ctx2 = (params zip args) toMap;
@@ -28,12 +28,10 @@ class Parser(var tokens: List[Token]) {
     }
     if (s.isVar()){
       val v = s.asVar().getID
-      if(ctx.contains(v)){
-        // TODO: may this happen?. recursion i.e ( = a 1 )  ( = b a ) ( = c b ) --> dfs
-        var yak = eval(ctx(v), ctx)
-        return yak
-      }
-      return eval(ctx(v), ctx)
+      // TODO: may this happen?. recursion i.e ( = a 1 )  ( = b a ) ( = c b ) --> dfs
+      if(ctx.contains(ID(v.getKey)))  return eval(ctx(ID(v.getKey)), ctx)
+      if(ctx.contains(ID(v.getKey, false)))  return eval(ctx(ID(v.getKey, false)), ctx)
+      return eval(ctx(v), ctx) // this should rise key not found
     }
     if (s.isMinExp()) return -eval(s.asMinExp().getExp, ctx)
     if( s.isBinExp()) {
@@ -51,9 +49,14 @@ class Parser(var tokens: List[Token]) {
       val lx = s.asLinkedExp()
       if( lx.getE1.isVarDef()){
         val ex1 = lx.getE1.asVarDef()
+        println(ex1)
+        println(ctx)
         if( ex1.getEx.isVar()  ) {
           // info: just query the element to check if exist
           ctx(ex1.getEx.asVar().getID)
+        }
+        if( ctx.contains(ID(ex1.getID.getKey, false))){
+          throw new SyntaxError("E09: Variable "+ ex1.getID.getKey + " immutable")
         }
         val ctx2 = ctx ++ collection.immutable.Map( ex1.getID -> ex1.getEx)
         return eval(lx.getE2, ctx2)
@@ -110,7 +113,9 @@ class Parser(var tokens: List[Token]) {
           }
           parameters ::= param
         } // info: should be fun add a type
-        var head = Head(funID.asID(), parameters)
+        // info: we define that parameters of a function are immutable
+         val parameters2 = parameters.map(x => ID(x.getKey, false))
+         var head = Head(funID.asID(), parameters2)
         // TODO: save function and metadata info in a symbols table
         if( !pop().isRPAR()) throw new SyntaxError("E05: Wrong syntax, missing ).") // pertinent comment: common dude is not a 
         // info : end head

@@ -11,7 +11,11 @@ sealed class Token(key: String){
 case class EOF(key:String) extends Token("EOF")
 case class LPAR(key: String) extends Token(key) // Left parenthesis (
 case class RPAR(key: String) extends Token(key) // Right parenthesis )
-case class ID(key: String) extends Token(key) // Identifier i.e := nameUser, x, y , foo12
+case class ID(key: String, mut: Boolean = true) extends Token(key){
+  // info: mut defines if the variable is mutable
+  def getKey: String = key
+  def isMut: Boolean = mut
+} // Identifier i.e := nameUser, x, y , foo12
 case class SP(key: String) extends Token(key) // Space ' '
 case class INT(key: String) extends Token(key) {
   def toInt: Int = key.toInt
