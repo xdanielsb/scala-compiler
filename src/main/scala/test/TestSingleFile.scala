@@ -37,15 +37,14 @@ object TestSingleFile {
       println("Evaluation of the tree: " + res)
     }
 
-
     res
   }
 
   def main(args: Array[String]) {
     // am I asleep?
-    val nameFile = "src/test/errorGarbage2.calc"
+    val nameFile = "src/test/redFib3.calc"
     try {
-      interpret(nameFile)
+      interpret(nameFile, verbose = true)
     } catch {
       case e: Exception => e.printStackTrace()
     }
