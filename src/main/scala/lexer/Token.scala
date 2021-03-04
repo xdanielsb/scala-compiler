@@ -1,10 +1,8 @@
 package lexer
 
 sealed class Token(key: String){
-
-  def getValue(): String ={
-    return key
-  }
+  def getValue: String = key
+  def toInt: Int = key.toInt
 }
 
 ///--- general
@@ -18,7 +16,7 @@ case class ID(key: String, mut: Boolean = true) extends Token(key){
 } // Identifier i.e := nameUser, x, y , foo12
 case class SP(key: String) extends Token(key) // Space ' '
 case class INT(key: String) extends Token(key) {
-  def toInt: Int = key.toInt
+
 }// Integer
 case class FOO(key: String) extends Token(key) // Token not classified
 

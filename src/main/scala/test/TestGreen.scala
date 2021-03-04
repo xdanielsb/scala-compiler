@@ -4,7 +4,7 @@ object TestGreen extends Test {
    def main(args: Array[String]): Unit = {
 
     // Calc Green
-    var verbose = true
+    var verbose = false
     test(verbose, "src/test/greenZeroUnix.calc", "0", Some(0))
     test(verbose, "src/test/greenZeroDos.calc", "0", Some(0))
     test(verbose, "src/test/greenZeroTab.calc", "0", Some(0))

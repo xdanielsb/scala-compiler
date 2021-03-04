@@ -2,7 +2,7 @@ package test
 
 object TestErrors extends Test {
    def main(args: Array[String]): Unit = {
-    var verbose = true
+    var verbose = false
     // various errors
     test(verbose, "test/error.calc", "no file", None)
     test(verbose, "src/test/errorEmpty.calc", "", None)

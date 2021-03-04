@@ -4,6 +4,7 @@ import parser.SyntaxError
 
 import java.io.{IOException, InputStream}
 import scala.util.control.Breaks.{break, breakable}
+import parser.TokenUtils.TokenImprovements
 
 class Lexer(in: InputStream) {
 	private var chr = in.read(); // current ASCII character (coded as an integer)
@@ -17,11 +18,17 @@ class Lexer(in: InputStream) {
 				// info: maybe a better option: 1 <= chr <= 32 ?
 				// 13 for pre-OS X
 				addToken();
-			} else if(buf.length == 0 && chr.toChar == '0'){
-				// info: to tackle: 00 -> 0 0
+			} else if(buf.length == 0 && chr.toChar =='0'){
+				in.mark(32);
+				val aux = in.read()
+				if (aux != -1){
+					if( aux.toChar!= '0' && aux.toChar.isDigit && !tokens.head.isOP())
+						throw new UnexpectedCharacter(chr.toChar+"")
+				}
+				in.reset()
 				buf += chr.toChar;
 				addToken();
-			} else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue()=="("){
+			} else if(tokens.length > 0 && chr.toChar == '-' && tokens.last.getValue=="("){
 				// info: to tackle this: (-2), (--2)
 				assert(buf.length == 0)
 				buf += chr.toChar;

@@ -2,7 +2,7 @@ package test
 
 object TestBlue extends Test {
   def main(args: Array[String]): Unit = {
-    var verbose = true
+    var verbose = false
     test(verbose, "src/test/blueDef.calc", "(= a 11) a", Some(11))
     // this test should return an exception not a None, isn't?
     test(verbose, "src/test/blueDefError.calc", "(= A 11) A", None)

@@ -3,7 +3,7 @@ package test
 object TestRed extends Test {
    def main(args: Array[String]): Unit = {
 
-    var verbose = true
+    var verbose = false
     // no recursion
     test(verbose, "src/test/redFunc0.calc", "(define (zero) 0)(zero)", Some(0))
     test(verbose, "src/test/redId.calc", "(define (id x) x) (id 11)", Some(11))
