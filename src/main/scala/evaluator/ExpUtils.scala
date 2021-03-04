@@ -11,15 +11,15 @@ object ExpUtils {
 
     def isIntLit: Boolean = s.isInstanceOf[IntLit]
 
-    def asIntLit:IntLit = s.asInstanceOf[IntLit]
+    def asIntLit: IntLit = s.asInstanceOf[IntLit]
 
     def isMinExp: Boolean = s.isInstanceOf[MinExp]
 
-    def asMinExp() : MinExp= s.asInstanceOf[MinExp]
+    def asMinExp(): MinExp = s.asInstanceOf[MinExp]
 
     def isBinExp: Boolean = s.isInstanceOf[BinExp]
 
-    def asBinExp() : BinExp = s.asInstanceOf[BinExp]
+    def asBinExp(): BinExp = s.asInstanceOf[BinExp]
 
     def isIfExp: Boolean = s.isInstanceOf[IfExp]
 

@@ -1,7 +1,7 @@
 package test
 
 object TestGreen extends Test {
-   def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit = {
 
     // Calc Green
     var verbose = false

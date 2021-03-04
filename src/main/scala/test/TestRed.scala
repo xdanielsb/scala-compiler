@@ -1,7 +1,7 @@
 package test
 
 object TestRed extends Test {
-   def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit = {
 
     var verbose = false
     // no recursion

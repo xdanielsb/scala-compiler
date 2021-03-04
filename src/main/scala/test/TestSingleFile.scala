@@ -14,8 +14,8 @@ object TestSingleFile {
     println(file)
 
     //1 - we get the tokens
-    val lexer = new Lexer(new BufferedInputStream( new FileInputStream((nameFile))));
-    val tokens = lexer.getTokens();
+    val lexer = new Lexer(new BufferedInputStream(new FileInputStream((nameFile))));
+    val tokens = lexer.getTokens
     println(tokens)
 
     //2 - we build the syntax tree
