@@ -20,8 +20,10 @@ class Parser(var tokens: List[Token]) {
       if(functor.contains(v)) {
         val fu = functor(v)
         val params = fu.getHead.getParams
-        val ctx2 = ctx ++ (params zip args) toMap;
-        return eval(fu.getBody.getEx, ctx2) // Todo change to ctx2
+        // info: here we remove ctx of the parent
+        //       actual parameters take its values
+        val ctx2 = (params zip args) toMap;
+        return eval(fu.getBody.getEx, ctx2)
       }
     }
     if (s.isVar()){
@@ -55,8 +57,6 @@ class Parser(var tokens: List[Token]) {
         }
         val ctx2 = ctx ++ collection.immutable.Map( ex1.getID -> ex1.getEx)
         return eval(lx.getE2, ctx2)
-      }else{
-       // eval(lx.getE1, ctx);
       }
       return eval(lx.getE2, ctx)
     }
@@ -101,9 +101,15 @@ class Parser(var tokens: List[Token]) {
         // info : init head
         if( !pop().isLPAR()) throw new SyntaxError("E05: Wrong syntax, missing (.")
         val funID= pop()
-        if( !funID.isID()) throw new SyntaxError("E05: Wrong syntax, defun should be followed by an id.")
+        if( !funID.isID()) throw new SyntaxError("E07: Wrong syntax, defun should be followed by an id.")
         var parameters: List[ID] = Nil
-        while(tokens.head.isID) parameters ::= pop().asID() // info: should be fun add a type
+        while(tokens.head.isID) {
+          val param = pop().asID()
+          if (parameters.contains(param)){
+            throw new SyntaxError("E08: Redefinition of parameter "+param)
+          }
+          parameters ::= param
+        } // info: should be fun add a type
         var head = Head(funID.asID(), parameters)
         // TODO: save function and metadata info in a symbols table
         if( !pop().isRPAR()) throw new SyntaxError("E05: Wrong syntax, missing ).") // pertinent comment: common dude is not a 
@@ -132,6 +138,10 @@ class Parser(var tokens: List[Token]) {
   }
 
   def addFunction(id: ID, v : FunDef): Unit = {
+    if(functor.contains(id)){
+      // info: it should be interesting have overriding like scala, java, c++ ...
+      throw new SyntaxError("E06: previous definition of " + ID) // pertinent comment: common dude is not a
+    }
     functor = functor + (id -> v)
   }
 
