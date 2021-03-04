@@ -1,6 +1,6 @@
 package test
 
-import calc.Launcher.interpret
+import TestSingleFile.interpret
 
 trait Test {
   private var count = 0
