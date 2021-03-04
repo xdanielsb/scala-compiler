@@ -1,3 +1,15 @@
+/*
+    Copyright (C) 2021  github.com/xdanielsb
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
 package lexer
 
 import lexer.StringUtils.StringImprovements
@@ -5,12 +17,11 @@ import java.io.InputStream
 import parser.TokenUtils.TokenImprovements
 
 class Lexer(in: InputStream) {
-  private var chr = in.read(); // current ASCII character (coded as an integer)
+  private var chr = in.read();
   private var buf = ""; // buffer
   private var tokens: List[Token] = Nil
 
   def getTokens: List[Token] = {
-    // return: list of tokens recorded in the file
     while (chr != -1) {
       if (chr.toChar == ' ' || chr == 10 || chr == 13 || chr == 9) {
         // info: maybe a better option: 1 <= chr <= 32 ?
@@ -20,7 +31,7 @@ class Lexer(in: InputStream) {
         in.mark(32)
         val aux = in.read()
         if (aux != -1) {
-          if (aux.toChar != '0' && aux.toChar.isDigit && !tokens.head.isOP())
+          if (aux.toChar != '0' && aux.toChar.isDigit && !tokens.head.isOP)
             throw new UnexpectedCharacter(chr.toChar + "")
         }
         in.reset()
