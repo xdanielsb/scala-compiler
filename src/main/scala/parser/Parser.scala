@@ -71,7 +71,7 @@ class Parser(var tokens: List[Token]) {
       parameters ::= param
     } // info: should be fun add a type
     // info: we define that parameters of a function are immutable
-    val parameters2 = parameters.map(x => ID(x.getKey, mut = false))
+    val parameters2 = parameters.map(x => ID(x.key, isMut = false))
     val head = Head(funID.asID(), parameters2)
     if (!pop().isRPAR) throw new SyntaxError("E05: Wrong syntax, missing ).")
     // info : end head

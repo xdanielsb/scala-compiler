@@ -5,6 +5,9 @@ import lexer.{ASSIGN, EQUA, FUNDEF, ID, IF, INT, LPAR, MINUS, OP, RPAR, Token}
 object TokenUtils {
 
   implicit class TokenImprovements(val s: Token) {
+
+    def toInt: Int = s.asInt().toInt
+
     def isInt: Boolean = s.isInstanceOf[INT]
 
     def isLPAR: Boolean = s.isInstanceOf[LPAR]

@@ -37,7 +37,7 @@ class Lexer(in: InputStream) {
         in.reset()
         buf += chr.toChar
         addToken()
-      } else if (tokens.nonEmpty && chr.toChar == '-' && tokens.last.getValue == "(") {
+      } else if (tokens.nonEmpty && chr.toChar == '-' && tokens.last.value == "(") {
         // info: to tackle this: (-2), (--2)
         assert(buf.isEmpty)
         buf += chr.toChar
