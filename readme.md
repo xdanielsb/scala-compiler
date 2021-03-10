@@ -77,64 +77,61 @@ Output
 
 Tokens: 
 List( 
-  LPAR((), FUNDEF(defun), LPAR((), ID(fib,true),
-  ID(n,true), RPAR()), LPAR((), IF(if), LPAR((), 
-  EQUA(==), ID(n,true), INT(0), RPAR()), INT(0), 
-  LPAR((), IF(if), LPAR((), EQUA(==), ID(n,true), 
-  INT(1), RPAR()), INT(1), LPAR((), ID(fibaux,true), 
-  ID(n,true), RPAR()), RPAR()), RPAR()), RPAR()), 
-  LPAR((), FUNDEF(defun), LPAR((), ID(fibaux,true), 
-  ID(n,true), RPAR()), LPAR((), ASSIGN(=), 
-  ID(fib1,true), LPAR((), ID(fib,true), LPAR((),
-  MINUS(-), ID(n,true), INT(1), RPAR()), RPAR()), 
-  RPAR()), LPAR((), ASSIGN(=), ID(fib2,true), 
-  LPAR((), ID(fib,true), LPAR((), MINUS(-), 
-  ID(n,true), INT(2), RPAR()), RPAR()), RPAR()),
-  LPAR((), PLUS(+), ID(fib1,true), ID(fib2,true), 
-  RPAR()), RPAR()), LPAR((), ID(fib,true), 
-  INT(4), RPAR())).
+  LPAR((), FUNDEF(defun), LPAR((), ID(fib),
+  ID(n), RPAR()), LPAR((), IF(if), LPAR((), 
+  EQUA(==), ID(n), INT(0), RPAR()), INT(0), 
+  LPAR((), IF(if), LPAR((), EQUA(==), ID(n), 
+  INT(1), RPAR()), INT(1), LPAR((), ID(fibaux), 
+  ID(n), RPAR()), RPAR()), RPAR()), RPAR()), 
+  LPAR((), FUNDEF(defun), LPAR((), ID(fibaux), 
+  ID(n), RPAR()), LPAR((), ASSIGN(=), 
+  ID(fib1), LPAR((), ID(fib), LPAR((),
+  MINUS(-), ID(n), INT(1), RPAR()), RPAR()), 
+  RPAR()), LPAR((), ASSIGN(=), ID(fib2), 
+  LPAR((), ID(fib), LPAR((), MINUS(-), 
+  ID(n), INT(2), RPAR()), RPAR()), RPAR()),
+  LPAR((), PLUS(+), ID(fib1), ID(fib2), 
+  RPAR()), RPAR()), LPAR((), ID(fib), 
+  INT(4), RPAR())
+).
 
 
-Syntax tree: 
-  LinkedExp(
+
+Syntax tree:
+
+
+Program(
+  List(
     FunDef(
-      Head(ID(fib,true),List(ID(n,false))),
+      Head(ID(fib),List(ID(n))),
       Body(
-       IfExp(
-        IF(if),BinExp(EQUA(==),Var(ID(n,true)),IntLit(0)),
-          IntLit(0),
-          IfExp(
-            IF(if),BinExp(EQUA(==),Var(ID(n,true)),IntLit(1)),
-              IntLit(1),
-              Call(ID(fibaux,true),List(Var(ID(n,true))))
-          )
+        IF(if) BinExp(EQUA(==),Var(ID(n)),IntLit(0))
+          IntLit(0)
+          IF(if) BinExp(EQUA(==),Var(ID(n)),IntLit(1))
+            IntLit(1)
+            Call(ID(fibaux),List(Var(ID(n))))
         )
+    ), 
+    FunDef(
+      Head(ID(fibaux),List(ID(n))),
+      Body(
+        VarDef(
+          ASSIGN(=),ID(fib1),
+            Call(ID(fib),List(BinExp(MINUS(-),Var(ID(n)),IntLit(1))))
+        )
+        VarDef(
+          ASSIGN(=),ID(fib2),
+            Call(ID(fib),List(BinExp(MINUS(-),Var(ID(n)),IntLit(2))))
+        )
+        BinExp(PLUS(+),Var(ID(fib1)),Var(ID(fib2)))
       )
-    ),
-    LinkedExp(
-      FunDef(
-        Head(ID(fibaux,true),List(ID(n,false))),
-        Body(
-          LinkedExp(
-            VarDef(ASSIGN(=),ID(fib1,true),
-             Call(ID(fib,true),
-               List(BinExp(MINUS(-),Var(ID(n,true)),IntLit(1)))
-              )
-            ),
-            LinkedExp(
-              VarDef(ASSIGN(=),ID(fib2,true),
-                Call(ID(fib,true),
-                  List(BinExp(MINUS(-),Var(ID(n,true)),IntLit(2)))
-                )
-              ),
-              BinExp(PLUS(+),Var(ID(fib1,true)),Var(ID(fib2,true)))
-            )
-          )
-        )
-      ),
-      Call(ID(fib,true),List(IntLit(4)))
     )
+  ),
+  Body(
+    Call(ID(fib),List(IntLit(4)))
   )
+)
+
 
 Evaluation of the tree= 3
 

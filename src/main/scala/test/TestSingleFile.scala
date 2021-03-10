@@ -27,7 +27,7 @@ object TestSingleFile {
    // val ast = parser.buildTree()
 
     if(verbose){
-      println("Syntax tree", ast)
+      println("Syntax tree:\n", ast)
     }
 
     //3 - we evaluate the tree
