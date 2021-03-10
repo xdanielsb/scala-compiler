@@ -13,20 +13,25 @@
 package evaluator
 
 import lexer.ID
-import parser.{Exp, FunDef, IntLit, SyntaxError}
+import parser.{Body, Exp, FunDef, IntLit, Program, SyntaxError}
 
 import scala.util.Try
 import ExpUtils.ExpImprovements
 
-class Evaluator(functor: Map[ID, FunDef]) {
+class Evaluator(functions: Map[ID, FunDef]) {
+
+  def evaluate(s: Program): Int ={
+    eval(s.body.exp, Map());
+  }
+
   def eval(s: Exp, ctx: Map[ID, Exp]): Int = {
     if (s.isIntLit) return s.asIntLit.value
     if (s.isCall) {
       val v = s.asCall().id
       val args = s.asCall().args.map(x => IntLit(eval(x, ctx)))
 
-      if (functor.contains(v)) {
-        val fu = functor(v)
+      if (functions.contains(v)) {
+        val fu = functions(v)
         val params = fu.head.params
         // info: here we remove ctx of the parent
         //       actual parameters take its values

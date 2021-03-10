@@ -21,6 +21,11 @@ class Parser(var tokens: List[Token]) {
 
   var functions: Map[ID, FunDef] = Map()
 
+  def build(): Program = {
+    val body = Body(buildTree())
+    Program(functions.map{case(k, v) => v}, body)
+  }
+
   def buildTree(): Exp = {
     val y = pop()
     var ans: Exp = null
@@ -34,11 +39,17 @@ class Parser(var tokens: List[Token]) {
       else if (z.isASSIGN && tokens.head.isID) ans = getVarDef(z)
       else if (z.isOP) ans = BinExp(z.asOP(), buildTree(), buildTree())
       else if (z.isIF) ans = IfExp(z.asIF(), buildTree(), buildTree(), buildTree())
-      else if (z.isFUN) ans = createFunction()
+      else if (z.isFUN) {
+        ans = createFunction()
+      }
       if (tokens.isEmpty || !pop().isRPAR)
         throw new SyntaxError("E01: Missing closing parenthesis in expression.")
     }
-    if ((ans.isInstanceOf[VarDef] || ans.isInstanceOf[FunDef]) && tokens.nonEmpty) {
+    if (ans.isInstanceOf[FunDef] && tokens.nonEmpty) {
+      // ans = LinkedExp(ans, buildTree()) // if you want to save the functions in the tree
+      return buildTree()
+    }
+    if (ans.isInstanceOf[VarDef]  && tokens.nonEmpty) {
       ans = LinkedExp(ans, buildTree())
     }
     ans

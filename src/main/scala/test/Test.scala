@@ -14,7 +14,7 @@ trait Test {
     args0(0) = filename
     if (verbose) println(s"====: ${filename}\ncontent: ${mess1}\nexpected: ${expected}")
     try {
-      val found = interpret(filename)
+      val found = interpret(filename, verbose)
       println(s"result: $found")
       expected match {
         case None => // error expected

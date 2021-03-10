@@ -22,16 +22,17 @@ object TestSingleFile {
 
     //2 - we build the syntax tree
     val parser = new Parser(tokens)
-    val ast = parser.buildTree()
+
+    val ast = parser.build()
+   // val ast = parser.buildTree()
 
     if(verbose){
-      println("Syntax tree: " + ast)
+      println("Syntax tree", ast)
     }
-
 
     //3 - we evaluate the tree
     val inspect = new Evaluator(parser.functions)
-    val res = inspect.eval(ast, Map())
+    val res = inspect.evaluate(ast)
 
     if(verbose){
       println("Evaluation of the tree: " + res)
