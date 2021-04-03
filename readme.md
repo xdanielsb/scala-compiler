@@ -97,7 +97,7 @@ List(
 
 
 
-Syntax tree:
+Abstract Syntax tree:
 
 
 Program(
